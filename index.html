@@ -420,10 +420,14 @@
             background: rgba(255, 255, 255, 0.1);
             padding: 12px 18px;
             border-radius: 50px;
-            display: flex;
+            display: none;
             align-items: center;
             gap: 12px;
             z-index: 100;
+        }
+
+        .music-player.show {
+            display: flex;
         }
 
         .music-player button {
@@ -647,6 +651,20 @@
             document.getElementById('valentine-modal').classList.remove('active');
             document.getElementById('game-page').classList.remove('active');
             document.getElementById('main-content').classList.add('active');
+            
+            // Показываем виджет музыки
+            document.querySelector('.music-player').classList.add('show');
+            
+            // Автозапуск музыки
+            const music = document.getElementById('music');
+            music.volume = 0.7;
+            music.play().then(() => {
+                playing = true;
+                document.querySelector('.music-player button').textContent = '⏸';
+            }).catch(() => {
+                // Если автозапуск заблокирован - ничего не делаем
+            });
+            
             startCounter();
             loadGallery();
         }
@@ -696,13 +714,16 @@
         let playing = false;
         function toggleMusic() {
             const music = document.getElementById('music');
+            const btn = document.querySelector('.music-player button');
             if (playing) {
                 music.pause();
                 playing = false;
+                btn.textContent = '▶';
             } else {
                 music.volume = 0.7;
                 music.play();
                 playing = true;
+                btn.textContent = '⏸';
             }
         }
     </script>
