@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>✨ Для Ксюши 💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --deep-space: #2d1b3d;
+            --cosmic-purple: #4a2545;
+            --valentine-pink: rgba(255, 105, 180, 0.4);
+            --valentine-red: rgba(255, 69, 96, 0.4);
+            --polaroid-white: #faf9f6;
+            --text-light: #f0f0f0;
+            --text-gold: #ffd700;
+            --heart-pink: #ff69b4;
+            --heart-red: #ff1744;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(180deg, var(--deep-space) 0%, var(--cosmic-purple) 100%);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="hotpink"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') 12 12, auto;
+        }
+
+        #hearts-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .nebula {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            pointer-events: none;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .nebula-1 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--valentine-pink), transparent);
+            top: 10%;
+            left: -10%;
+        }
+
+        .nebula-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--valentine-red), transparent);
+            top: 50%;
+            right: -15%;
+            animation-delay: 5s;
+        }
+
+        .nebula-3 {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255, 20, 147, 0.3), transparent);
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, -20px); }
+        }
+
+        /* LOGIN */
+        #login-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, var(--deep-space) 0%, var(--cosmic-purple) 100%);
+            opacity: 1;
+            transition: opacity 0.8s ease;
+        }
+
+        #login-page.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .login-container {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 90%;
+            width: 350px;
+        }
+
+        .login-container h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: var(--heart-pink);
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+        }
+
+        .login-container p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--heart-pink);
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+        }
+
+        .error-message {
+            color: #ff6b9d;
+            margin-top: 15px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .error-message.show {
+            opacity: 1;
+        }
+
+        /* ИГРА - ПИКСЕЛЬНАЯ */
+        #game-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            background: linear-gradient(180deg, var(--deep-space) 0%, var(--cosmic-purple) 100%);
+            display: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        #game-page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .game-header {
+            text-align: center;
+            padding: 30px 15px 15px;
+        }
+
+        .game-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            color: var(--heart-pink);
+            margin-bottom: 8px;
+            text-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
+        }
+
+        .game-subtitle {
+            font-size: 1em;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .game-counter {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.8em;
+            color: var(--heart-pink);
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        .game-area {
+            position: absolute;
+            top: 130px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 130px);
+            overflow: hidden;
+        }
+
+        /* ПИКСЕЛЬНЫЕ СЕРДЕЧКИ */
+        .falling-game-heart {
+            position: absolute;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            will-change: transform, top, opacity;
+            animation: heartFallSmooth linear;
+            filter: drop-shadow(0 0 5px rgba(255, 105, 180, 0.6));
+            opacity: 0;
+        }
+
+        .falling-game-heart.spawned {
+            animation: heartFallSmooth linear, heartSpawn 0.6s ease-out;
+        }
+
+        @keyframes heartFallSmooth {
+            0% {
+                top: -80px;
+            }
+            100% {
+                top: 110vh;
+            }
+        }
+
+        @keyframes heartSpawn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-10deg);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.1) rotate(5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .catch-effect {
+            position: absolute;
+            font-size: 2em;
+            color: var(--heart-pink);
+            animation: catchPop 0.7s ease-out forwards;
+            pointer-events: none;
+            text-shadow: 0 0 15px rgba(255, 105, 180, 0.9);
+            z-index: 1001;
+        }
+
+        @keyframes catchPop {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(3) translateY(-60px);
+            }
+        }
+
+        /* ВАЛЕНТИНКА */
+        #valentine-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+        }
+
+        #valentine-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .valentine-content {
+            max-width: 500px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.2), rgba(255, 20, 147, 0.2));
+            padding: 40px 25px;
+            border-radius: 25px;
+            border: 2px solid var(--heart-pink);
+            backdrop-filter: blur(20px);
+            text-align: center;
+            animation: heartBeat 1s ease, fadeInUp 0.5s ease;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.05); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.03); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .valentine-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            color: var(--heart-pink);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .valentine-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.15em;
+            line-height: 1.7;
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        .valentine-signature {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3em;
+            font-style: italic;
+            color: var(--text-gold);
+            margin-top: 15px;
+        }
+
+        .valentine-button {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1em;
+            padding: 12px 35px;
+            background: linear-gradient(135deg, var(--heart-pink), var(--heart-red));
+            border: none;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
+        }
+
+        .valentine-button:active {
+            transform: scale(0.95);
+        }
+
+        /* ОСНОВНОЙ САЙТ */
+        #main-content {
+            position: relative;
+            z-index: 2;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            height: 100vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #main-content.active {
+            display: block;
+            opacity: 1;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px 30px;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .main-title .name {
+            color: var(--heart-pink);
+            text-shadow: 0 0 25px rgba(255, 105, 180, 0.8);
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            font-weight: 300;
+            font-style: italic;
+            opacity: 0.9;
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+
+        .counter-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px 15px;
+            margin: 30px 15px;
+            border: 1px solid rgba(255, 105, 180, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .counter-title {
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            color: var(--heart-pink);
+        }
+
+        .counter-display {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.5em;
+            font-weight: 500;
+            color: white;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .counter-ms {
+            font-size: 0.6em;
+            opacity: 0.7;
+        }
+
+        .gallery {
+            max-width: 100%;
+            margin: 40px auto;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            justify-items: center;
+        }
+
+        .polaroid {
+            background: var(--polaroid-white);
+            padding: 12px 12px 45px 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            opacity: 0;
+            animation: fadeInPolaroid 0.4s ease forwards;
+        }
+
+        @keyframes fadeInPolaroid {
+            to { opacity: 1; }
+        }
+
+        .polaroid:active {
+            transform: scale(0.98);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+            border-radius: 2px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .polaroid img.loaded {
+            opacity: 1;
+        }
+
+        .polaroid-caption {
+            position: absolute;
+            bottom: 8px;
+            left: 12px;
+            right: 12px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #333;
+            line-height: 1.3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .polaroid.empty {
+            min-height: 370px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .empty-photo-area {
+            flex: 1;
+            background: white;
+            border-radius: 2px;
+            margin-bottom: 8px;
+        }
+
+        .empty-caption {
+            text-align: center;
+            font-size: 0.85em;
+            color: #555;
+            padding: 3px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .message-button-container {
+            text-align: center;
+            margin: 60px 0 80px;
+        }
+
+        .message-button {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3em;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.3), rgba(255, 20, 147, 0.3));
+            border: 2px solid var(--heart-pink);
+            color: var(--heart-pink);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .message-button:active {
+            transform: scale(0.95);
+        }
+
+        /* МОДАЛКИ */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            position: relative;
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-image.loaded {
+            opacity: 1;
+        }
+
+        .modal-caption {
+            text-align: center;
+            font-size: 1.1em;
+            margin-top: 15px;
+            color: white;
+            line-height: 1.4;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 1.4em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .message-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .message-content {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 105, 180, 0.2);
+            backdrop-filter: blur(10px);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .message-text {
+            font-size: 1.1em;
+            line-height: 1.7;
+            color: var(--text-light);
+        }
+
+        .message-text p {
+            margin-bottom: 1.3em;
+        }
+
+        .message-signature {
+            text-align: right;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3em;
+            font-style: italic;
+            margin-top: 25px;
+            color: var(--heart-pink);
+        }
+
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 18px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .play-button {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--heart-pink), var(--heart-red));
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .music-info {
+            font-size: 0.85em;
+            color: white;
+        }
+
+        .music-title {
+            font-weight: 600;
+        }
+
+        .music-artist {
+            opacity: 0.7;
+            font-size: 0.9em;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        /* УБРАТЬ ПОДСВЕТКУ НА МОБИЛЬНЫХ */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+        }
+
+        input {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="hearts-canvas"></canvas>
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+    <div class="nebula nebula-3"></div>
+
+    <div id="login-page">
+        <div class="login-container">
+            <h1>💕</h1>
+            <p>Введи волшебное слово</p>
+            <input type="text" id="password-input" class="login-input" placeholder="..." autocomplete="off">
+            <p class="error-message" id="error-message">Попробуй еще раз 💫</p>
+        </div>
+    </div>
+
+    <div id="game-page">
+        <div class="game-header">
+            <h1 class="game-title">💕 Поймай 10 сердечек! 💕</h1>
+            <p class="game-subtitle">Тапай по падающим сердечкам</p>
+            <div class="game-counter">Поймано: <span id="caught-count">0</span>/10</div>
+        </div>
+        <div class="game-area" id="game-area"></div>
+    </div>
+
+    <div id="valentine-modal">
+        <div class="valentine-content">
+            <h2 class="valentine-title">💕 С Днём Святого Валентина! 💕</h2>
+            <div class="valentine-text">
+                Ты только что поймала 10 сердечек,<br>
+                но самое главное ты поймала уже давно — моё.<br><br>
+                Люблю тебя больше всех звёзд на небе!
+            </div>
+            <div class="valentine-signature">
+                Твой Саша ❤️
+            </div>
+            <button class="valentine-button" id="valentine-button">Открыть подарок 🎁</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <header>
+            <h1 class="main-title">
+                <span class="dear">Дорогая </span><span class="name">Ксюша</span> ✨
+            </h1>
+            <p class="subtitle">Ты ассоциируешься у меня с космосом, такая же безграничная и волшебная</p>
+        </header>
+
+        <div class="counter-container">
+            <div class="counter-title">Вместе уже:</div>
+            <div class="counter-display" id="counter">
+                <span id="days">0</span> дней 
+                <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+                <span class="counter-ms"><span id="milliseconds">000</span></span>
+            </div>
+        </div>
+
+        <div class="gallery" id="gallery"></div>
+
+        <div class="message-button-container">
+            <button class="message-button" id="message-btn">💌 Особое послание</button>
+        </div>
+    </div>
+
+    <div class="modal" id="photo-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-photo-modal">×</button>
+            <img class="modal-image" id="modal-image" src="" alt="">
+            <div class="modal-caption" id="modal-caption"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="empty-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-empty-modal">×</button>
+            <div class="modal-caption" id="empty-modal-text" style="font-size: 1.3em; padding: 30px; line-height: 1.5;"></div>
+        </div>
+    </div>
+
+    <div class="message-modal" id="message-modal">
+        <div class="message-content">
+            <button class="close-modal" id="close-message-modal">×</button>
+            <div class="message-text">
+                <p><strong>Любимая,</strong></p>
+                <p>С того момента, как ты появилась в моей жизни, каждый день для меня становится ярче. Ты солнышко, которое делает мою жизнь лучше.</p>
+                <p>Я благодарен судьбе за то, что когда-то встретил такого светлого, доброго, понимающего и любящего человека. Такие подлинные качества сложно встретить в наше время, и именно они отражают тебя!</p>
+                <p>Мы проходим через испытания расстоянием, но это не ослабляет нашу любовь, а укрепляет её. Мы становимся сильнее вместе, даже когда по отдельности. Это и есть настоящая любовь, и я хочу чтобы она лишь усиливалась с каждым днем, чтобы мы стремились узнать друг друга лучше, становились еще ближе и наша любовь бесконечно трансформировалась во что-то ещё более глубинное.</p>
+                <div class="message-signature">
+                    Люблю тебя,<br>
+                    Твой Саша ❤️
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="music-player">
+        <button class="play-button" id="play-button">▶</button>
+        <div class="music-info">
+            <div class="music-title">Still</div>
+            <div class="music-artist">You'll Never Get To Heaven</div>
+        </div>
+    </div>
+
+    <audio id="background-music" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const photos = [
+            { file: "Первая совместная фотография.jpg", caption: "Первая совместная фотография" },
+            { file: "В столовой в Казани.jpg", caption: "В столовой в Казани" },
+            { file: "В тот день ты мне очень подняла настроение и часто смешила.jpg", caption: "В тот день ты мне очень подняла настроение и часто смешила" },
+            { file: "Гуляем по Казани. В тот день мы пошли в Кремль и снимали видео на маленькую камеру.jpg", caption: "Гуляем по Казани. В тот день мы пошли в Кремль и снимали видео на маленькую камеру" },
+            { file: "Гуляем по Казани.jpg", caption: "Гуляем по Казани" },
+            { file: "Еще одна модельная поза Ксюши.jpg", caption: "Еще одна модельная поза Ксюши" },
+            { file: "Ждем троллейбус чтобы поехать на стремный фильм.jpg", caption: "Ждем троллейбус чтобы поехать на стремный фильм" },
+            { file: "Загадочный_взгляд_на_день_рождение.jpg", caption: "Загадочный взгляд на день рождение" },
+            { file: "Как природа сотворила.jpg", caption: "Как природа сотворила" },
+            { file: "Катаемся в Нефтеюганске.jpg", caption: "Катаемся в Нефтеюганске" },
+            { file: "Красивая Ксюша в красивом парке в Тюмени.jpg", caption: "Красивая Ксюша в красивом парке в Тюмени" },
+            { file: "Красивая.jpg", caption: "Красивая" },
+            { file: "Ксюша вайбует на дне рождении.jpg", caption: "Ксюша вайбует на дне рождении" },
+            { file: "Ксюша заботится о насекомых.jpg", caption: "Ксюша заботится о насекомых" },
+            { file: "Ксюша мило сидит.jpg", caption: "Ксюша мило сидит" },
+            { file: "Ксюша модельно позирует где-то в черте города.jpg", caption: "Ксюша модельно позирует где-то в черте города" },
+            { file: "Ксюша на тренировке.jpg", caption: "Ксюша на тренировке" },
+            { file: "Ксюша_позирует_в_унике__что_там_еще_делать_.jpg", caption: "Ксюша позирует в унике (что там еще делать)" },
+            { file: "Ксюша прониклась кавайным вайбом корейской кафешки так что не сдержалась и сделала сердечко.jpg", caption: "Ксюша прониклась кавайным вайбом корейской кафешки так что не сдержалась и сделала сердечко" },
+            { file: "Ксюша радуется топовому тортику от Санька.jpg", caption: "Ксюша радуется топовому тортику от Санька" },
+            { file: "Ксюша со свечкой.jpg", caption: "Ксюша со свечкой" },
+            { file: "Ксюша удивляется горению свечи.jpg", caption: "Ксюша удивляется горению свечи" },
+            { file: "Ксюша удивляется камере на телефоне.jpg", caption: "Ксюша удивляется камере на телефоне" },
+            { file: "Ксюша флексит в тачке.jpg", caption: "Ксюша флексит в тачке" },
+            { file: "Меня очень смешит эта фотография.jpg", caption: "Меня очень смешит эта фотография" },
+            { file: "Мне нравится эта фотография.jpg", caption: "Мне нравится эта фотография" },
+            { file: "Первый_созвон_на_расстоянии_после_лета.jpg", caption: "Первый созвон на расстоянии после лета" },
+            { file: "Приятные воспоминание связаны с этим днем, хорошо покатались.jpg", caption: "Приятные воспоминание связаны с этим днем, хорошо покатались" },
+            { file: "Рука Сани, голова Сени.jpg", caption: "Рука Сани, голова Сени" },
+            { file: "Твой день рождения.jpg", caption: "Твой день рождения" },
+            { file: "Топовый подросток.jpg", caption: "Топовый подросток" },
+            { file: "Уезжаем в конце лета.jpg", caption: "Уезжаем в конце лета" },
+            { file: "Эво я.jpg", caption: "Эво я" },
+            { file: "Эта фотка всегда используется чтобы посмотреть как Ксюша будет выглядеть с другим цветом волос .jpg", caption: "Эта фотка всегда используется чтобы посмотреть как Ксюша будет выглядеть с другим цветом волос" },
+            { file: "Это мы вместе.jpg", caption: "Это мы вместе" },
+            { file: "Это я помню ты приехала в университет раньше и долго ждала начало пары.jpg", caption: "Это я помню ты приехала в университет раньше и долго ждала начало пары" },
+            { file: "день рождение 2.jpg", caption: "День рождение" },
+            { file: "photo_2026-02-06_08-55-39.jpg", caption: "Милая тут" },
+            { file: "photo_2026-02-06_08-57-12.jpg", caption: "Любимая ❤️" },
+            { file: "Без комментариев.jpg", caption: "Без комментариев" }
+        ];
+
+        const emptyPolaroids = [
+            { short: "День рождения", full: "Тут мы зажигаем свечи на твоём торте" },
+            { short: "Путешествие", full: "Наше первое долгое путешествие на машине" },
+            { short: "Новый дом", full: "Это мы стоим у порога нашего дома и делаем первую фотографию" },
+            { short: "50 лет спустя", full: "А это наша совместная фотография 50 лет спустя, мы такие же энергичные, жизнерадостные и любящие друг друга" }
+        ];
+
+        // Вход
+        const passwordInput = document.getElementById('password-input');
+        const errorMessage = document.getElementById('error-message');
+        const loginPage = document.getElementById('login-page');
+        const gamePage = document.getElementById('game-page');
+
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        function checkPassword() {
+            if (passwordInput.value.trim().toLowerCase() === 'люблю') {
+                // СРАЗУ К ИГРЕ!
+                loginPage.classList.add('hidden');
+                setTimeout(() => {
+                    loginPage.style.display = 'none';
+                    gamePage.classList.add('active');
+                    setTimeout(() => startGame(), 100);
+                }, 800);
+            } else {
+                passwordInput.value = '';
+                errorMessage.classList.add('show');
+                passwordInput.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                    passwordInput.style.animation = '';
+                }, 2000);
+            }
+        }
+
+        // ИГРА С ПЛАВНЫМИ ПИКСЕЛЬНЫМИ СЕРДЕЧКАМИ
+        let caughtHearts = 0;
+        let gameActive = false;
+
+        function startGame() {
+            gameActive = true;
+            caughtHearts = 0;
+            document.getElementById('caught-count').textContent = caughtHearts;
+            setTimeout(() => spawnHeart(), 600);
+        }
+
+        function spawnHeart() {
+            if (!gameActive) return;
+
+            const gameArea = document.getElementById('game-area');
+            const heart = document.createElement('div');
+            heart.className = 'falling-game-heart';
+            
+            // ПИКСЕЛЬНЫЕ СЕРДЕЧКИ
+            const heartTypes = ['❤️', '💕', '💖', '💗', '💓', '💝', '💞'];
+            heart.textContent = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+            
+            const size = 40 + Math.random() * 30;
+            heart.style.fontSize = size + 'px';
+            heart.style.left = Math.random() * (window.innerWidth - 80) + 'px';
+            
+            const duration = 4 + Math.random() * 1.5;
+            heart.style.animationDuration = duration + 's, 0.6s';
+            
+            gameArea.appendChild(heart);
+            
+            // ПЛАВНОЕ ПОЯВЛЕНИЕ
+            setTimeout(() => heart.classList.add('spawned'), 10);
+
+            heart.addEventListener('click', catchHeart);
+            heart.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                catchHeart.call(heart, e);
+            });
+
+            setTimeout(() => {
+                if (heart.parentElement) {
+                    heart.remove();
+                }
+            }, (duration + 0.6) * 1000);
+
+            if (gameActive && caughtHearts < 10) {
+                setTimeout(spawnHeart, 1000);
+            }
+        }
+
+        function catchHeart(e) {
+            if (!gameActive) return;
+
+            const heart = e.currentTarget;
+            const rect = heart.getBoundingClientRect();
+            
+            const effect = document.createElement('div');
+            effect.className = 'catch-effect';
+            effect.textContent = '✨💕✨';
+            effect.style.left = rect.left + rect.width / 2 - 35 + 'px';
+            effect.style.top = rect.top + rect.height / 2 - 20 + 'px';
+            document.body.appendChild(effect);
+            
+            setTimeout(() => effect.remove(), 700);
+            
+            heart.remove();
+            
+            caughtHearts++;
+            document.getElementById('caught-count').textContent = caughtHearts;
+            
+            if (caughtHearts >= 10) {
+                gameActive = false;
+                setTimeout(showValentine, 1000);
+            }
+        }
+
+        function showValentine() {
+            createHeartRain();
+            document.getElementById('valentine-modal').classList.add('active');
+        }
+
+        function createHeartRain() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.style.position = 'fixed';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.top = '-50px';
+                    heart.style.fontSize = (18 + Math.random() * 20) + 'px';
+                    heart.textContent = ['💕', '❤️', '💗', '💖'][Math.floor(Math.random() * 4)];
+                    heart.style.animation = 'confettiFall ' + (3 + Math.random() * 2) + 's linear';
+                    heart.style.pointerEvents = 'none';
+                    heart.style.zIndex = '2001';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 5500);
+                }, i * 70);
+            }
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(120vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        document.getElementById('valentine-button').addEventListener('click', () => {
+            document.getElementById('valentine-modal').classList.remove('active');
+            setTimeout(() => {
+                gamePage.classList.remove('active');
+                setTimeout(() => {
+                    gamePage.style.display = 'none';
+                    document.getElementById('main-content').classList.add('active');
+                    startCounter();
+                    tryAutoplay();
+                    createGallery();
+                }, 100);
+            }, 300);
+        });
+
+        // Счетчик
+        const startDate = new Date('2025-02-18T04:32:00+03:00');
+        
+        function startCounter() {
+            updateCounter();
+            setInterval(updateCounter, 33);
+        }
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - startDate;
+            
+            document.getElementById('days').textContent = Math.floor(diff / 86400000);
+            document.getElementById('hours').textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+            document.getElementById('milliseconds').textContent = String(Math.floor(diff % 1000)).padStart(3, '0');
+        }
+
+        // Галерея
+        function createGallery() {
+            const gallery = document.getElementById('gallery');
+
+            photos.forEach((photo, index) => {
+                const polaroid = document.createElement('div');
+                polaroid.className = 'polaroid';
+                polaroid.style.animationDelay = `${index * 0.03}s`;
+                
+                const img = document.createElement('img');
+                img.src = `photos/${photo.file}`;
+                img.alt = photo.caption;
+                
+                img.addEventListener('load', function() {
+                    this.classList.add('loaded');
+                });
+                
+                img.addEventListener('error', function() {
+                    console.error('Ошибка загрузки:', photo.file);
+                });
+                
+                const caption = document.createElement('div');
+                caption.className = 'polaroid-caption';
+                caption.textContent = photo.caption;
+                
+                polaroid.appendChild(img);
+                polaroid.appendChild(caption);
+                polaroid.addEventListener('click', () => openPhotoModal(photo));
+                gallery.appendChild(polaroid);
+            });
+
+            emptyPolaroids.forEach((empty, index) => {
+                const polaroid = document.createElement('div');
+                polaroid.className = 'polaroid empty';
+                polaroid.style.animationDelay = `${(photos.length + index) * 0.03}s`;
+                polaroid.innerHTML = `
+                    <div class="empty-photo-area"></div>
+                    <div class="empty-caption">${empty.short}</div>
+                `;
+                polaroid.addEventListener('click', () => openEmptyModal(empty.full));
+                gallery.appendChild(polaroid);
+            });
+        }
+
+        // Модалки
+        const photoModal = document.getElementById('photo-modal');
+        const modalImage = document.getElementById('modal-image');
+        const modalCaption = document.getElementById('modal-caption');
+
+        function openPhotoModal(photo) {
+            modalImage.src = `photos/${photo.file}`;
+            modalImage.classList.remove('loaded');
+            modalCaption.textContent = photo.caption;
+            photoModal.classList.add('active');
+            
+            modalImage.addEventListener('load', function() {
+                this.classList.add('loaded');
+            });
+        }
+
+        document.getElementById('close-photo-modal').addEventListener('click', () => {
+            photoModal.classList.remove('active');
+        });
+
+        photoModal.addEventListener('click', (e) => {
+            if (e.target === photoModal) {
+                photoModal.classList.remove('active');
+            }
+        });
+
+        const emptyModal = document.getElementById('empty-modal');
+        const emptyModalText = document.getElementById('empty-modal-text');
+
+        function openEmptyModal(text) {
+            emptyModalText.textContent = text;
+            emptyModal.classList.add('active');
+        }
+
+        document.getElementById('close-empty-modal').addEventListener('click', () => {
+            emptyModal.classList.remove('active');
+        });
+
+        emptyModal.addEventListener('click', (e) => {
+            if (e.target === emptyModal) {
+                emptyModal.classList.remove('active');
+            }
+        });
+
+        const messageModal = document.getElementById('message-modal');
+        document.getElementById('message-btn').addEventListener('click', () => {
+            messageModal.classList.add('active');
+            for (let i = 0; i < 80; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.textContent = ['💕', '❤️', '💗'][Math.floor(Math.random() * 3)];
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.fontSize = (12 + Math.random() * 10) + 'px';
+                    confetti.style.animation = `confettiFall ${2 + Math.random() * 2}s linear`;
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.zIndex = '2001';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 4500);
+                }, i * 25);
+            }
+        });
+
+        document.getElementById('close-message-modal').addEventListener('click', () => {
+            messageModal.classList.remove('active');
+        });
+
+        messageModal.addEventListener('click', (e) => {
+            if (e.target === messageModal) {
+                messageModal.classList.remove('active');
+            }
+        });
+
+        // Музыка
+        const audio = document.getElementById('background-music');
+        const playButton = document.getElementById('play-button');
+        let isPlaying = false;
+
+        function tryAutoplay() {
+            audio.volume = 0.7;
+            audio.play().then(() => {
+                isPlaying = true;
+                playButton.textContent = '⏸';
+            }).catch(() => {
+                isPlaying = false;
+                playButton.textContent = '▶';
+            });
+        }
+
+        playButton.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playButton.textContent = '▶';
+                isPlaying = false;
+            } else {
+                audio.volume = 0.7;
+                audio.play().then(() => {
+                    playButton.textContent = '⏸';
+                    isPlaying = true;
+                });
+            }
+        });
+
+        // Сердечки на canvas
+        const canvas = document.getElementById('hearts-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const hearts = [];
+        for (let i = 0; i < 60; i++) {
+            hearts.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 12 + 4,
+                opacity: Math.random(),
+                speed: Math.random() * 0.015 + 0.008,
+                color: Math.random() > 0.5 ? '#ff69b4' : '#ff1744'
+            });
+        }
+
+        function drawHearts() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            hearts.forEach(heart => {
+                ctx.save();
+                ctx.globalAlpha = heart.opacity;
+                ctx.fillStyle = heart.color;
+                ctx.font = `${heart.size}px Arial`;
+                ctx.fillText('💕', heart.x, heart.y);
+                ctx.restore();
+                
+                heart.opacity += heart.speed;
+                if (heart.opacity > 1 || heart.opacity < 0.2) {
+                    heart.speed *= -1;
+                }
+            });
+            
+            requestAnimationFrame(drawHearts);
+        }
+
+        drawHearts();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // ДОБАВЛЯЮ АНИМАЦИЮ confettiFall
+        const confettiStyle = document.createElement('style');
+        confettiStyle.textContent = `
+            @keyframes confettiFall {
+                to {
+                    transform: translateY(120vh) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(confettiStyle);
+    </script>
+</body>
+</html>
