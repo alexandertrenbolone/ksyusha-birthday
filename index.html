@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>✨ Для Ксюши 💕</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(180deg, #2d1b3d 0%, #4a2545 100%);
+            color: #f0f0f0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        #login-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        #login-page.hidden {
+            display: none;
+        }
+
+        .login-box {
+            text-align: center;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            max-width: 350px;
+            width: 90%;
+        }
+
+        .login-box h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #ff69b4;
+        }
+
+        .login-box p {
+            font-size: 1.2em;
+            margin-bottom: 25px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: #ff69b4;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #ff69b4, #ff1744);
+            border: none;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .error-msg {
+            color: #ff6b9d;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        #game-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 999;
+        }
+
+        #game-page.active {
+            display: block;
+        }
+
+        .game-header {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .game-header h1 {
+            font-size: 1.8em;
+            color: #ff69b4;
+            margin-bottom: 10px;
+        }
+
+        .game-header .counter {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.8em;
+            color: #ff69b4;
+            margin-top: 15px;
+        }
+
+        .game-area {
+            position: absolute;
+            top: 130px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 130px);
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 45px;
+            cursor: pointer;
+            animation: fall linear;
+        }
+
+        @keyframes fall {
+            from { top: -80px; opacity: 1; }
+            to { top: 110vh; opacity: 1; }
+        }
+
+        .catch-fx {
+            position: absolute;
+            font-size: 2em;
+            color: #ff69b4;
+            animation: pop 0.6s ease-out forwards;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        @keyframes pop {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(2.5) translateY(-50px); }
+        }
+
+        #valentine-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        #valentine-modal.active {
+            display: flex;
+        }
+
+        .valentine-box {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 105, 180, 0.15);
+            padding: 40px 25px;
+            border-radius: 25px;
+            border: 2px solid #ff69b4;
+            text-align: center;
+        }
+
+        .valentine-box h2 {
+            font-size: 1.8em;
+            color: #ff69b4;
+            margin-bottom: 20px;
+        }
+
+        .valentine-box p {
+            font-size: 1.15em;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .valentine-box .signature {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3em;
+            font-style: italic;
+            color: #ffd700;
+            margin-top: 15px;
+        }
+
+        .valentine-box button {
+            padding: 12px 35px;
+            font-size: 1.1em;
+            background: linear-gradient(135deg, #ff69b4, #ff1744);
+            border: none;
+            color: white;
+            border-radius: 50px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        #main-content {
+            display: none;
+            padding: 20px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        #main-content.active {
+            display: block;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px 30px;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        header .name {
+            color: #ff69b4;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .counter-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px 15px;
+            margin: 30px 15px;
+            text-align: center;
+        }
+
+        .counter-box h3 {
+            font-size: 1.3em;
+            color: #ff69b4;
+            margin-bottom: 12px;
+        }
+
+        .counter-box .time {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .gallery {
+            padding: 20px 15px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .photo {
+            background: #faf9f6;
+            padding: 12px 12px 45px 12px;
+            border-radius: 4px;
+            position: relative;
+            max-width: 320px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .photo img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        .photo .caption {
+            position: absolute;
+            bottom: 8px;
+            left: 12px;
+            right: 12px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #333;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .message-btn {
+            text-align: center;
+            margin: 60px 0 80px;
+        }
+
+        .message-btn button {
+            font-size: 1.3em;
+            padding: 15px 40px;
+            background: rgba(255, 105, 180, 0.3);
+            border: 2px solid #ff69b4;
+            color: #ff69b4;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 70vh;
+            border-radius: 10px;
+        }
+
+        .modal-caption {
+            text-align: center;
+            color: white;
+            font-size: 1.1em;
+            margin-top: 15px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            padding: 20px;
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .message-modal.active {
+            display: block;
+        }
+
+        .message-box {
+            max-width: 500px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px 25px;
+            border-radius: 20px;
+        }
+
+        .message-box p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            margin-bottom: 1.3em;
+        }
+
+        .message-box .signature {
+            text-align: right;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3em;
+            font-style: italic;
+            color: #ff69b4;
+            margin-top: 25px;
+        }
+
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 18px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .music-player button {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff69b4, #ff1744);
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .music-player .info {
+            font-size: 0.85em;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-page">
+        <div class="login-box">
+            <h1>💕</h1>
+            <p>Введи волшебное слово</p>
+            <input type="text" id="pwd" placeholder="...">
+            <button onclick="checkPwd()">Войти 💕</button>
+            <p class="error-msg" id="err">Попробуй еще раз 💫</p>
+        </div>
+    </div>
+
+    <div id="game-page">
+        <div class="game-header">
+            <h1>💕 Поймай 10 сердечек! 💕</h1>
+            <p>Тапай по падающим сердечкам</p>
+            <div class="counter">Поймано: <span id="caught">0</span>/10</div>
+        </div>
+        <div class="game-area" id="gameArea"></div>
+    </div>
+
+    <div id="valentine-modal">
+        <div class="valentine-box">
+            <h2>💕 С Днём Святого Валентина! 💕</h2>
+            <p>
+                Ты только что поймала 10 сердечек,<br>
+                но самое главное ты поймала уже давно — моё.<br><br>
+                Люблю тебя больше всех звёзд на небе!
+            </p>
+            <div class="signature">Твой Саша ❤️</div>
+            <button onclick="openMain()">Открыть подарок 🎁</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <header>
+            <h1>Дорогая <span class="name">Ксюша</span> ✨</h1>
+            <p>Ты ассоциируешься у меня с космосом, такая же безграничная и волшебная</p>
+        </header>
+
+        <div class="counter-box">
+            <h3>Вместе уже:</h3>
+            <div class="time" id="time">0 дней 00:00:00</div>
+        </div>
+
+        <div class="gallery" id="gallery"></div>
+
+        <div class="message-btn">
+            <button onclick="openMsg()">💌 Особое послание</button>
+        </div>
+    </div>
+
+    <div class="modal" id="photoModal">
+        <div style="position: relative; text-align: center;">
+            <button class="close-btn" onclick="closeModal('photoModal')">×</button>
+            <img id="modalImg" src="" alt="">
+            <div class="modal-caption" id="modalCap"></div>
+        </div>
+    </div>
+
+    <div class="message-modal" id="msgModal">
+        <div class="message-box">
+            <button class="close-btn" onclick="closeModal('msgModal')">×</button>
+            <p><strong>Любимая,</strong></p>
+            <p>С того момента, как ты появилась в моей жизни, каждый день для меня становится ярче. Ты солнышко, которое делает мою жизнь лучше.</p>
+            <p>Я благодарен судьбе за то, что когда-то встретил такого светлого, доброго, понимающего и любящего человека. Такие подлинные качества сложно встретить в наше время, и именно они отражают тебя!</p>
+            <p>Мы проходим через испытания расстоянием, но это не ослабляет нашу любовь, а укрепляет её. Мы становимся сильнее вместе, даже когда по отдельности. Это и есть настоящая любовь, и я хочу чтобы она лишь усиливалась с каждым днем, чтобы мы стремились узнать друг друга лучше, становились еще ближе и наша любовь бесконечно трансформировалась во что-то ещё более глубинное.</p>
+            <div class="signature">Люблю тебя,<br>Твой Саша ❤️</div>
+        </div>
+    </div>
+
+    <div class="music-player">
+        <button onclick="toggleMusic()">▶</button>
+        <div class="info">
+            <div style="font-weight: 600;">Still</div>
+            <div style="opacity: 0.7; font-size: 0.9em;">You'll Never Get To Heaven</div>
+        </div>
+    </div>
+
+    <audio id="music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const photos = [
+            { file: "Первая совместная фотография.jpg", caption: "Первая совместная фотография" },
+            { file: "В столовой в Казани.jpg", caption: "В столовой в Казани" },
+            { file: "В тот день ты мне очень подняла настроение и часто смешила.jpg", caption: "В тот день ты мне очень подняла настроение и часто смешила" },
+            { file: "Гуляем по Казани. В тот день мы пошли в Кремль и снимали видео на маленькую камеру.jpg", caption: "Гуляем по Казани. В тот день мы пошли в Кремль и снимали видео на маленькую камеру" },
+            { file: "Гуляем по Казани.jpg", caption: "Гуляем по Казани" },
+            { file: "Еще одна модельная поза Ксюши.jpg", caption: "Еще одна модельная поза Ксюши" },
+            { file: "Ждем троллейбус чтобы поехать на стремный фильм.jpg", caption: "Ждем троллейбус чтобы поехать на стремный фильм" },
+            { file: "Загадочный_взгляд_на_день_рождение.jpg", caption: "Загадочный взгляд на день рождение" },
+            { file: "Как природа сотворила.jpg", caption: "Как природа сотворила" },
+            { file: "Катаемся в Нефтеюганске.jpg", caption: "Катаемся в Нефтеюганске" },
+            { file: "Красивая Ксюша в красивом парке в Тюмени.jpg", caption: "Красивая Ксюша в красивом парке в Тюмени" },
+            { file: "Красивая.jpg", caption: "Красивая" },
+            { file: "Ксюша вайбует на дне рождении.jpg", caption: "Ксюша вайбует на дне рождении" },
+            { file: "Ксюша заботится о насекомых.jpg", caption: "Ксюша заботится о насекомых" },
+            { file: "Ксюша мило сидит.jpg", caption: "Ксюша мило сидит" },
+            { file: "Ксюша модельно позирует где-то в черте города.jpg", caption: "Ксюша модельно позирует где-то в черте города" },
+            { file: "Ксюша на тренировке.jpg", caption: "Ксюша на тренировке" },
+            { file: "Ксюша_позирует_в_унике__что_там_еще_делать_.jpg", caption: "Ксюша позирует в унике (что там еще делать)" },
+            { file: "Ксюша прониклась кавайным вайбом корейской кафешки так что не сдержалась и сделала сердечко.jpg", caption: "Ксюша прониклась кавайным вайбом корейской кафешки так что не сдержалась и сделала сердечко" },
+            { file: "Ксюша радуется топовому тортику от Санька.jpg", caption: "Ксюша радуется топовому тортику от Санька" },
+            { file: "Ксюша со свечкой.jpg", caption: "Ксюша со свечкой" },
+            { file: "Ксюша удивляется горению свечи.jpg", caption: "Ксюша удивляется горению свечи" },
+            { file: "Ксюша удивляется камере на телефоне.jpg", caption: "Ксюша удивляется камере на телефоне" },
+            { file: "Ксюша флексит в тачке.jpg", caption: "Ксюша флексит в тачке" },
+            { file: "Меня очень смешит эта фотография.jpg", caption: "Меня очень смешит эта фотография" },
+            { file: "Мне нравится эта фотография.jpg", caption: "Мне нравится эта фотография" },
+            { file: "Первый_созвон_на_расстоянии_после_лета.jpg", caption: "Первый созвон на расстоянии после лета" },
+            { file: "Приятные воспоминание связаны с этим днем, хорошо покатались.jpg", caption: "Приятные воспоминание связаны с этим днем, хорошо покатались" },
+            { file: "Рука Сани, голова Сени.jpg", caption: "Рука Сани, голова Сени" },
+            { file: "Твой день рождения.jpg", caption: "Твой день рождения" },
+            { file: "Топовый подросток.jpg", caption: "Топовый подросток" },
+            { file: "Уезжаем в конце лета.jpg", caption: "Уезжаем в конце лета" },
+            { file: "Эво я.jpg", caption: "Эво я" },
+            { file: "Эта фотка всегда используется чтобы посмотреть как Ксюша будет выглядеть с другим цветом волос .jpg", caption: "Эта фотка всегда используется чтобы посмотреть как Ксюша будет выглядеть с другим цветом волос" },
+            { file: "Это мы вместе.jpg", caption: "Это мы вместе" },
+            { file: "Это я помню ты приехала в университет раньше и долго ждала начало пары.jpg", caption: "Это я помню ты приехала в университет раньше и долго ждала начало пары" },
+            { file: "день рождение 2.jpg", caption: "День рождение" },
+            { file: "photo_2026-02-06_08-55-39.jpg", caption: "Милая тут" },
+            { file: "photo_2026-02-06_08-57-12.jpg", caption: "Любимая ❤️" },
+            { file: "Без комментариев.jpg", caption: "Без комментариев" }
+        ];
+
+        let caught = 0;
+        let gameActive = false;
+
+        function checkPwd() {
+            const pwd = document.getElementById('pwd').value.trim().toLowerCase();
+            if (pwd === 'люблю') {
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('game-page').classList.add('active');
+                setTimeout(startGame, 200);
+            } else {
+                document.getElementById('pwd').value = '';
+                document.getElementById('err').classList.add('show');
+                setTimeout(() => document.getElementById('err').classList.remove('show'), 2000);
+            }
+        }
+
+        document.getElementById('pwd').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                checkPwd();
+            }
+        });
+
+        function startGame() {
+            gameActive = true;
+            caught = 0;
+            document.getElementById('caught').textContent = caught;
+            spawnHeart();
+        }
+
+        function spawnHeart() {
+            if (!gameActive) return;
+
+            const area = document.getElementById('gameArea');
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = ['❤️', '💕', '💖', '💗', '💓'][Math.floor(Math.random() * 5)];
+            heart.style.fontSize = (40 + Math.random() * 30) + 'px';
+            heart.style.left = Math.random() * (window.innerWidth - 80) + 'px';
+            heart.style.animationDuration = (4 + Math.random() * 2) + 's';
+            
+            area.appendChild(heart);
+
+            heart.onclick = function() {
+                if (!gameActive) return;
+                
+                const rect = heart.getBoundingClientRect();
+                const fx = document.createElement('div');
+                fx.className = 'catch-fx';
+                fx.textContent = '✨💕✨';
+                fx.style.left = rect.left + 'px';
+                fx.style.top = rect.top + 'px';
+                document.body.appendChild(fx);
+                setTimeout(() => fx.remove(), 600);
+                
+                heart.remove();
+                caught++;
+                document.getElementById('caught').textContent = caught;
+                
+                if (caught >= 10) {
+                    gameActive = false;
+                    setTimeout(showValentine, 800);
+                }
+            };
+
+            setTimeout(() => heart.remove(), 6500);
+
+            if (gameActive && caught < 10) {
+                setTimeout(spawnHeart, 1000);
+            }
+        }
+
+        function showValentine() {
+            document.getElementById('valentine-modal').classList.add('active');
+        }
+
+        function openMain() {
+            document.getElementById('valentine-modal').classList.remove('active');
+            document.getElementById('game-page').classList.remove('active');
+            document.getElementById('main-content').classList.add('active');
+            startCounter();
+            loadGallery();
+        }
+
+        const startDate = new Date('2025-02-18T04:32:00+03:00');
+
+        function startCounter() {
+            setInterval(() => {
+                const diff = Date.now() - startDate;
+                const days = Math.floor(diff / 86400000);
+                const hours = Math.floor((diff % 86400000) / 3600000);
+                const mins = Math.floor((diff % 3600000) / 60000);
+                const secs = Math.floor((diff % 60000) / 1000);
+                document.getElementById('time').textContent = 
+                    `${days} дней ${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+            }, 1000);
+        }
+
+        function loadGallery() {
+            const gallery = document.getElementById('gallery');
+            photos.forEach(photo => {
+                const div = document.createElement('div');
+                div.className = 'photo';
+                div.innerHTML = `
+                    <img src="photos/${photo.file}" alt="${photo.caption}">
+                    <div class="caption">${photo.caption}</div>
+                `;
+                div.onclick = () => openPhoto(photo);
+                gallery.appendChild(div);
+            });
+        }
+
+        function openPhoto(photo) {
+            document.getElementById('modalImg').src = 'photos/' + photo.file;
+            document.getElementById('modalCap').textContent = photo.caption;
+            document.getElementById('photoModal').classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function openMsg() {
+            document.getElementById('msgModal').classList.add('active');
+        }
+
+        let playing = false;
+        function toggleMusic() {
+            const music = document.getElementById('music');
+            if (playing) {
+                music.pause();
+                playing = false;
+            } else {
+                music.volume = 0.7;
+                music.play();
+                playing = true;
+            }
+        }
+    </script>
+</body>
+</html>
